@@ -5,4 +5,4 @@
      - Second Name: Asl Javadian
 
 2. [The class URL] (https://sdsu.instructure.com/courses/113151)
-3. Big Data: Large, complex data that is in progress with time, and is used to address problems.
+3. Big Data is a large, complex, and structured data that is in progress with time; This adds up to its complixity, but it can be used to address problems that can not be solved by more simple databases.
