@@ -122,3 +122,10 @@ ggplot(count_manner,
   list()
 ggsave("All_Accident_Manner2.png", width = 12, height = 6)
 
+#= I used the “Medical Examiner Cases” dataset, and I copied it in my dictionary. It is a comprehensive dataset including the recorded information on the death of each person. There are a lot of variables such as time of death, manner of death, manner type, city of death, gender, age, and so on. For instance, “manner of death” variable consists of three general manners of death (accident, natural, suicide), and the “manner type” specifically determines the reasons of death. 
+Firstly, I decided to assess the average age of dead people in each category of manner type for the cases that had died due to an accident. Moreover, I added a new filter, and I assessed the cases for the year 2021. This is the final plot depicted by ggplot2: 
+I used ggplot function of ggplot2 package to plot my graphs; I used “aes” function to determine the x and y axes, “geom_bar” function to draw the bars of the charts. Additionally, I used “xlab” and “ylab” and “ggtitle” for setting the labels of each ax and the title of the charts respectively.
+ 
+
+In order to interpret this plot, I can see that the deaths caused by “Bicycle” and “Fall” are more prevalent in old people, having the means of 81, and 80 (years old) respectively. “Train” and “Carbon Monoxide” are prevalent in young people having the means of 23 and 30 respectively. Additionally, “Alcohol related” manner have a mean of 47 years old, showing that these cases died due to alcohol averagely on their late 50ths. 
+=#
