@@ -1,0 +1,124 @@
+# This is my first R exercise.
+# Type basic math expressions as the following 
+# (or copy the whole paragraph and paste into the Console).
+# The comments will be ignored by R. 
+4 + 3 # â+â plus sign
+50/4 # â/â divided sign
+6*6 # â*â multiply sign
+9 + 3*3 # basic calculation procedure
+9^3 # â^â is denotes power. 9^3 = 9*9*9 
+
+
+4*5/2       #10
+7^2         #49
+(4^3)/(2*2) #16
+
+
+# Both lines of code declare a variable,
+# Then assign a vector to the variable.
+Age <- c(23, 20, 21, 22, 30)
+Score <- c(83, 99, 80, 79, 90)
+
+
+# This code prints summary statistics to the console.
+summary(Age)
+summary(Score)
+
+
+
+
+#*******************Question2***********************
+#*******************Question2***********************
+#******************Question2************************
+
+
+
+setwd("C:/webexercise-2") # set up working directory
+
+# Read .csv file into an R data frame.
+mydata = read.csv("Medical_Examiner_Cases.csv")
+
+install.packages("ggplot2")
+
+
+#### load required libraries
+library(ggplot2)
+
+
+
+#Firstone: 2021_accident_Manner by mean age
+accident_data <- mydata[mydata$Manner.of.Death == "Accident",]
+### list all the field names (Variables in the dataset)
+names(accident_data)
+### Subset data by specific column 
+## subset only the year 2021
+data_2021 <- accident_data[accident_data$Year == 2021,]
+
+### Generate some statistics
+## aggregate manner by names, then calculate the mean for age variable
+mean_manner <- aggregate(data_2021[, c("Age.in.Years")], by=list(Manner.Type = data_2021$Manner.Type), FUN=mean, na.rm=TRUE)
+
+## remove the rows UNKNOWN, empty, and OTHER 
+mean_manner <- mean_manner[mean_manner$Manner.Type != "Sealed Case",]
+mean_manner <- mean_manner[mean_manner$Manner.Type != "",]
+mean_manner <- mean_manner[mean_manner$Manner.Type != "OTHER",]
+
+print(mean_manner)
+### Make a visual plot! aes: aesthetic mappings, geom_bar: rectangle bars
+ggplot(mean_manner,
+       aes(mean_manner$Manner.Type,mean_manner$x)) +
+  geom_bar(stat="identity",aes(fill= factor(mean_manner$Manner.Type)), 
+           width=0.5) + 
+  ggtitle("Accident Deaths in San Deigo by Manner (Mean of Age) in 2021")+ 
+  ylab("Mean of Age") + 
+  xlab("Manner of accident death") + 
+  theme(legend.position="right") + 
+  theme(axis.text.x = element_text(angle=70, vjust=1, hjust=1))+
+  list()
+## show the plot & save it to file
+ggsave("Manner_MeanAge.png", width = 12, height = 6)
+
+
+
+
+#Secondone: Alcohol_Gender_Count
+data_alcohol <- accident_data[accident_data$Manner.Type == "Alcohol Related",]
+count_gender <- aggregate(data_alcohol[, c("Row.Number")], by=list(Gender = data_alcohol$Gender), FUN=length) #length is used for counting the frequency of each class in a category
+count_gender <- count_gender[count_gender$Gender != "Unknown",] #removing the Unkown cells
+print(count_gender)
+ggplot(count_gender,
+       aes(count_gender$Gender,count_gender$x)) +
+  geom_bar(stat="identity",aes(fill= factor(count_gender$Gender)), 
+           width=0.5) + 
+  ggtitle("Alcohol Deaths in San Deigo by Gender (Count)")+ 
+  ylab("Count of death") + 
+  xlab("Gender") + 
+  theme(legend.position="right") + 
+  theme(axis.text.x = element_text(angle=70, vjust=1, hjust=1))+
+  list()
+## show the plot & save it to file
+ggsave("Alcohol_gender.png", width = 12, height = 6)
+
+
+
+
+
+#thirdone: manner_count
+count_manner <- aggregate(accident_data[, c("Row.Number")], by=list(Manner.Type = accident_data$Manner.Type), FUN=length)
+
+count_manner <- count_manner[count_manner$Manner.Type != "",] #to remove empty cells
+count_manner <- count_manner[count_manner$x >200,] #to remove less frequent classes of our category
+print(count_manner)
+
+ggplot(count_manner,
+       aes(count_manner$Manner.Type,count_manner$x)) +
+  geom_bar(stat="identity",aes(fill= factor(count_manner$Manner.Type)), 
+           width=0.5) + 
+  ggtitle("All Accident Deaths in San Deigo by Manner (Count)")+ 
+  ylab("Count of death") + 
+  xlab("Manner") + 
+  theme(legend.position="right") + 
+  theme(axis.text.x = element_text(angle=70, vjust=1, hjust=1))+
+  list()
+ggsave("All_Accident_Manner2.png", width = 12, height = 6)
+
